@@ -60,7 +60,7 @@ public class SampleController {
     	userService.tx();
         return Result.success(true);
     }
-    
+
     @RequestMapping("/redis/get")
     @ResponseBody
     public Result<User> redisGet() {

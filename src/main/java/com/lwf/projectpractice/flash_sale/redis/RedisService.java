@@ -11,9 +11,14 @@ import redis.clients.jedis.JedisPool;
 @Service
 public class RedisService {
 	
+
+	private final JedisPool jedisPool;
+
 	@Autowired
-	JedisPool jedisPool;
-	
+	public RedisService(JedisPool jedisPool){
+		this.jedisPool=jedisPool;
+	}
+
 	/**
 	 * 获取当个对象
 	 * */
