@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import com.lwf.projectpractice.flash_sale.redis.RedisService;
 import com.lwf.projectpractice.flash_sale.result.Result;
+import com.lwf.projectpractice.flash_sale.service.MiaoshaUserService;
 import com.lwf.projectpractice.flash_sale.vo.LoginVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +21,16 @@ public class LoginController {
 
 	private static Logger log = LoggerFactory.getLogger(LoginController.class);
 	
-//	@Autowired
-//	MiaoshaUserService userService;
-	
-	@Autowired
-    RedisService redisService;
-	
+
+    private final MiaoshaUserService userService;
+    private final RedisService redisService;
+
+    @Autowired
+	public LoginController(MiaoshaUserService miaoshaUserService,RedisService redisService){
+	    this.userService=miaoshaUserService;
+	    this.redisService=redisService;
+    }
+
     @RequestMapping("/to_login")
     public String toLogin() {
         return "login";
@@ -36,7 +41,7 @@ public class LoginController {
     public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
     	log.info(loginVo.toString());
     	//登录
-    	//userService.login(response, loginVo);
+    	userService.login(response, loginVo);
     	return Result.success(true);
     }
 }
