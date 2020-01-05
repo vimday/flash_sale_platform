@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import com.lwf.projectpractice.flash_sale.redis.RedisService;
 import com.lwf.projectpractice.flash_sale.result.Result;
+import com.lwf.projectpractice.flash_sale.vo.LoginVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,10 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<Boolean> doLogin(HttpServletResponse response) {
-        return Result.success(true);
+    public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
+    	log.info(loginVo.toString());
+    	//登录
+    	//userService.login(response, loginVo);
+    	return Result.success(true);
     }
-
-//    @RequestMapping("/do_login")
-//    @ResponseBody
-//    public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
-//    	log.info(loginVo.toString());
-//    	//登录
-//    	userService.login(response, loginVo);
-//    	return Result.success(true);
-//    }
 }
