@@ -1,7 +1,7 @@
 # flash_sale_platform
 电商秒杀平台
 
-##阿里云相关配置
+## 阿里云相关配置
 一般采用最新的稳定版本
 
 centos 7.7
@@ -19,8 +19,8 @@ MySql8.0修改root密码：https://blog.csdn.net/wolf131721/article/details/9300
 注意要开启mysql跟redis的远程访问，修改相应配置文件，并开放相应端口
 
 
-##数据库表
-###创建秒杀用户
+## 数据库表
+### 创建秒杀用户
 ```mysql
 CREATE TABLE miaosha_user(
 id BIGINT(20) NOT NULL,
