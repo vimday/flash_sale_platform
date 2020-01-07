@@ -38,6 +38,11 @@ public class MiaoshaUserService {
 		return miaoshaUserDao.getById(id);
 	}
 	
+	public MiaoshaUser getByToken(String token){
+		if(StringUtils.isEmpty(token))
+			return null;
+		return redisService.get(MiaoshaUserKey.token,token,MiaoshaUser.class);
+	}
 
 	public MiaoshaUser getByToken(HttpServletResponse response, String token) {
 		if(StringUtils.isEmpty(token)) {
