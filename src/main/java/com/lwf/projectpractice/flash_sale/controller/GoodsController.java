@@ -41,6 +41,13 @@ public class GoodsController {
 //		return "goods_list";
 //	}
 
+	//只需要写业务代码,业务逻辑放到了 userargumentresolver里面
+	@RequestMapping("/test_webconfigure")
+	public String testWebconfigureWithoutGoods(Model model,MiaoshaUser user){
+		model.addAttribute("user",user);
+		return "goods_list";
+	}
+
 	//第一次把cookietoken的注解也写成requestparam了(为了兼容手机端有可能把cookie写到参数里） 还单独写了上面的test函数
 	//写错的话两个参数都为空 在pc端测试自然两个参数都为空，就跳转不到goods_list页了
 	@RequestMapping("/testtoken")
