@@ -66,9 +66,13 @@ public class GoodsController {
 
     @RequestMapping("/to_list")
     public String list(Model model, MiaoshaUser user) {
+		//System.out.println(user);
     	model.addAttribute("user", user);
     	//查询商品列表
     	List<GoodsVo> goodsList = goodsService.listGoodsVo();
+    	//压测，不登录 user为null 也可以获取商品列表
+//    	for (GoodsVo goodsVo:goodsList)
+//			System.out.println(goodsVo);
     	model.addAttribute("goodsList", goodsList);
         return "goods_list";
     }

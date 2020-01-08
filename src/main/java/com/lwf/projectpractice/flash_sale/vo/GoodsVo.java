@@ -33,4 +33,14 @@ public class GoodsVo extends Goods {
 	public void setMiaoshaPrice(Double miaoshaPrice) {
 		this.miaoshaPrice = miaoshaPrice;
 	}
+
+	@Override
+	public String toString() {
+		return "GoodsVo{" +
+				"miaoshaPrice=" + miaoshaPrice +
+				", stockCount=" + stockCount +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				'}';
+	}
 }
