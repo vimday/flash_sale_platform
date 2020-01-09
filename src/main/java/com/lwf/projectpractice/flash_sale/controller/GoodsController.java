@@ -64,6 +64,11 @@ public class GoodsController {
 		return "goods_list";
 	}
 
+	/*
+
+	QPS:1267 5000*10
+	 */
+
     @RequestMapping("/to_list")
     public String list(Model model, MiaoshaUser user) {
 		//System.out.println(user);
