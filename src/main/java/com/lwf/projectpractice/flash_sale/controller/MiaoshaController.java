@@ -91,11 +91,13 @@ public class MiaoshaController {
         if(stock <= 0) {
             return Result.error(CodeMsg.MIAO_SHA_OVER);
         }
+        //数据库层面的唯一联合索引保证不会多次秒杀到
         //判断是否已经秒杀到了
         MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdGoodsId(user.getId(), goodsId);
         if(order != null) {
             return Result.error(CodeMsg.REPEATE_MIAOSHA);
         }
+        //数据库层面保证不会超卖(数据库保证了并发的安全问题)
         //减库存 下订单 写入秒杀订单
         OrderInfo orderInfo = miaoshaService.miaosha(user, goods);
         return Result.success(orderInfo);
