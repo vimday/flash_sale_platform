@@ -22,8 +22,8 @@ public class LoginController {
 	private static Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 
-    private final MiaoshaUserService userService;
-    private final RedisService redisService;
+    private  MiaoshaUserService userService;
+    private  RedisService redisService;
 
     @Autowired
 	public LoginController(MiaoshaUserService miaoshaUserService,RedisService redisService){

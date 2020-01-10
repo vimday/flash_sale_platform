@@ -11,7 +11,7 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisPoolFactory {
 
 
-	private final RedisConfig redisConfig;
+	private  RedisConfig redisConfig;
 	@Autowired
 	public RedisPoolFactory(RedisConfig redisConfig){
 		this.redisConfig=redisConfig;

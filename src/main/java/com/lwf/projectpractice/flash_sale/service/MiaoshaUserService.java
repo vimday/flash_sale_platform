@@ -25,8 +25,9 @@ public class MiaoshaUserService {
 	
 	public static final String COOKI_NAME_TOKEN = "token";
 
-	private final MiaoshaUserDao miaoshaUserDao;
-	private final RedisService redisService;
+	//一个service引用别人的时候 一定能要引用sesrvice级别的，因为service一般涉及缓存 ，而dao不涉及
+	private  MiaoshaUserDao miaoshaUserDao;
+	private  RedisService redisService;
 
 	@Autowired
 	public MiaoshaUserService(MiaoshaUserDao miaoshaUserDao,RedisService redisService){
@@ -35,7 +36,30 @@ public class MiaoshaUserService {
 	}
 
 	public MiaoshaUser getById(long id) {
-		return miaoshaUserDao.getById(id);
+		MiaoshaUser user= redisService.get(MiaoshaUserKey.getById,""+id,MiaoshaUser.class);
+		if(user!=null)
+			return user;
+
+		user= miaoshaUserDao.getById(id);
+		if(user!=null)
+			redisService.set(MiaoshaUserKey.getById,""+id,user);
+		return user;
+	}
+
+	public boolean updatePassword(String token, long id,String passwordNew){
+		MiaoshaUser user=getById(id);
+		if(user==null)
+			throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
+		//更新数据库
+		MiaoshaUser toBeUpdate=new MiaoshaUser();
+		toBeUpdate.setId(id);
+		toBeUpdate.setPassword(MD5Util.formPassToDBPass(passwordNew,user.getSalt()));
+		miaoshaUserDao.update(toBeUpdate);
+		//处理缓存
+		redisService.delete(MiaoshaUserKey.getById,""+id);
+		user.setPassword(toBeUpdate.getPassword());
+		redisService.set(MiaoshaUserKey.token,token,user);
+		return true;
 	}
 	
 	public MiaoshaUser getByToken(String token){
