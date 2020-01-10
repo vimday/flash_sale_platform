@@ -1,16 +1,13 @@
 package com.lwf.projectpractice.flash_sale.controller;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/demo")
 public class DemoController {
-//    @RequestMapping("/")
+    //    @RequestMapping("/")
 //    @ResponseBody
 //    String home() {
 //        return "Hello World!";
@@ -30,7 +27,7 @@ public class DemoController {
 //        //return new Result(500102, "XXX");
 //    }
     @RequestMapping("/thymeleaf")
-    public String  thymeleaf(Model model) {
+    public String thymeleaf(Model model) {
         model.addAttribute("name", "Joshua");
         return "hello";
     }

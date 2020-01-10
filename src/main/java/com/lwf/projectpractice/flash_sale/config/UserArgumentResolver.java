@@ -18,37 +18,37 @@ import javax.servlet.http.HttpServletResponse;
 @Service
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     private final MiaoshaUserService userService;
-    
+
     @Autowired
-    public UserArgumentResolver(MiaoshaUserService userService){
-        this.userService=userService;
+    public UserArgumentResolver(MiaoshaUserService userService) {
+        this.userService = userService;
     }
-    
+
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        Class<?> clazz=methodParameter.getParameterType();
+        Class<?> clazz = methodParameter.getParameterType();
         return clazz == MiaoshaUser.class;
     }
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        HttpServletRequest request=nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        HttpServletResponse response=nativeWebRequest.getNativeResponse(HttpServletResponse.class);
-        String paramToken=request.getParameter(MiaoshaUserService.COOKI_NAME_TOKEN);
-        String cookieToken=getCookieValue(request,MiaoshaUserService.COOKI_NAME_TOKEN);
-        if(StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
+        HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
+        HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
+        String paramToken = request.getParameter(MiaoshaUserService.COOKI_NAME_TOKEN);
+        String cookieToken = getCookieValue(request, MiaoshaUserService.COOKI_NAME_TOKEN);
+        if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
             return null;
         }
-        String token = StringUtils.isEmpty(paramToken)?cookieToken:paramToken;
+        String token = StringUtils.isEmpty(paramToken) ? cookieToken : paramToken;
         return userService.getByToken(response, token);
     }
 
     private String getCookieValue(HttpServletRequest request, String cookiName) {
-        Cookie[]  cookies = request.getCookies();
-        if(cookies==null||cookies.length==0)
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null || cookies.length == 0)
             return null;
-        for(Cookie cookie : cookies) {
-            if(cookie.getName().equals(cookiName)) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(cookiName)) {
                 return cookie.getValue();
             }
         }

@@ -21,7 +21,7 @@ public class UserController {
 
     @RequestMapping("/info")
     @ResponseBody
-    public Result<MiaoshaUser> info(Model model,MiaoshaUser user){
+    public Result<MiaoshaUser> info(Model model, MiaoshaUser user) {
         return Result.success(user);
     }
 }

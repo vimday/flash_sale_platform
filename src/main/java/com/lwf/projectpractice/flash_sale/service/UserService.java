@@ -2,40 +2,38 @@ package com.lwf.projectpractice.flash_sale.service;
 
 import com.lwf.projectpractice.flash_sale.dao.UserDao;
 import com.lwf.projectpractice.flash_sale.domain.User;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
 @Service
 public class UserService {
 
-	private final UserDao userDao;
+    private final UserDao userDao;
 
-	@Autowired
-	public UserService( UserDao userDao){
-		this.userDao=userDao;
-	}
-	
-	public User getById(int id) {
-		 return userDao.getById(id);
-	}
+    @Autowired
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
-	@Transactional
-	public boolean tx() {
-		User u1= new User();
-		u1.setId(2);
-		u1.setName("2222");
-		userDao.insert(u1);
-		
-		User u2= new User();
-		u2.setId(1);
-		u2.setName("11111");
-		userDao.insert(u2);
-		
-		return true;
-	}
-	
+    public User getById(int id) {
+        return userDao.getById(id);
+    }
+
+    @Transactional
+    public boolean tx() {
+        User u1 = new User();
+        u1.setId(2);
+        u1.setName("2222");
+        userDao.insert(u1);
+
+        User u2 = new User();
+        u2.setId(1);
+        u2.setName("11111");
+        userDao.insert(u2);
+
+        return true;
+    }
+
 }

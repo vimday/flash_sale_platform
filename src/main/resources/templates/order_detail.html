@@ -2,21 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>订单详情</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <!-- jquery -->
-    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}" type="text/javascript"></script>
     <!-- bootstrap -->
-    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap/css/bootstrap.min.css}" />
-    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
     <!-- jquery-validator -->
-    <script type="text/javascript" th:src="@{/jquery-validation/jquery.validate.min.js}"></script>
-    <script type="text/javascript" th:src="@{/jquery-validation/localization/messages_zh.min.js}"></script>
+    <script th:src="@{/jquery-validation/jquery.validate.min.js}" type="text/javascript"></script>
+    <script th:src="@{/jquery-validation/localization/messages_zh.min.js}" type="text/javascript"></script>
     <!-- layer -->
-    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <script th:src="@{/layer/layer.js}" type="text/javascript"></script>
     <!-- md5.js -->
-    <script type="text/javascript" th:src="@{/js/md5.min.js}"></script>
+    <script th:src="@{/js/md5.min.js}" type="text/javascript"></script>
     <!-- common.js -->
-    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/common.js}" type="text/javascript"></script>
 </head>
 <body>
 <div class="panel panel-default">
@@ -24,11 +24,11 @@
     <table class="table" id="goodslist">
         <tr>
             <td>商品名称</td>
-            <td th:text="${goods.goodsName}" colspan="3"></td>
+            <td colspan="3" th:text="${goods.goodsName}"></td>
         </tr>
         <tr>
             <td>商品图片</td>
-            <td colspan="2"><img th:src="@{${goods.goodsImg}}" width="200" height="200" /></td>
+            <td colspan="2"><img height="200" th:src="@{${goods.goodsImg}}" width="200"/></td>
         </tr>
         <tr>
             <td>订单价格</td>
@@ -36,11 +36,11 @@
         </tr>
         <tr>
             <td>下单时间</td>
-            <td th:text="${#dates.format(orderInfo.createDate, 'yyyy-MM-dd HH:mm:ss')}" colspan="2"></td>
+            <td colspan="2" th:text="${#dates.format(orderInfo.createDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
         </tr>
         <tr>
             <td>订单状态</td>
-            <td >
+            <td>
                 <span th:if="${orderInfo.status eq 0}">未支付</span>
                 <span th:if="${orderInfo.status eq 1}">待发货</span>
                 <span th:if="${orderInfo.status eq 2}">已发货</span>
@@ -49,12 +49,12 @@
                 <span th:if="${orderInfo.status eq 5}">已完成</span>
             </td>
             <td>
-                <button class="btn btn-primary btn-block" type="submit" id="payButton">立即支付</button>
+                <button class="btn btn-primary btn-block" id="payButton" type="submit">立即支付</button>
             </td>
         </tr>
         <tr>
             <td>收货人</td>
-            <td colspan="2">XXX  18812341234</td>
+            <td colspan="2">XXX 18812341234</td>
         </tr>
         <tr>
             <td>收货地址</td>

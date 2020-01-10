@@ -21,10 +21,10 @@ public class SampleController {
 
     private final RedisService redisService;
 
-	@Autowired
-    public SampleController(UserService userService,RedisService redisService){
-	    this.userService=userService;
-	    this.redisService=redisService;
+    @Autowired
+    public SampleController(UserService userService, RedisService redisService) {
+        this.userService = userService;
+        this.redisService = redisService;
     }
 
 
@@ -33,50 +33,50 @@ public class SampleController {
     public Result<String> home() {
         return Result.success("Hello，world");
     }
-    
+
     @RequestMapping("/error")
     @ResponseBody
     public Result<String> error() {
         return Result.error(CodeMsg.SESSION_ERROR);
     }
-    
+
     @RequestMapping("/hello/themaleaf")
     public String themaleaf(Model model) {
         model.addAttribute("name", "Joshua");
         return "hello";
     }
-    
+
     @RequestMapping("/db/get")
     @ResponseBody
     public Result<User> dbGet() {
-    	User user = userService.getById(1);
+        User user = userService.getById(1);
         return Result.success(user);
     }
-    
-    
+
+
     @RequestMapping("/db/tx")
     @ResponseBody
     public Result<Boolean> dbTx() {
-    	userService.tx();
+        userService.tx();
         return Result.success(true);
     }
 
     @RequestMapping("/redis/get")
     @ResponseBody
     public Result<User> redisGet() {
-    	User  user  = redisService.get(UserKey.getById, ""+1, User.class);
+        User user = redisService.get(UserKey.getById, "" + 1, User.class);
         return Result.success(user);
     }
-    
+
     @RequestMapping("/redis/set")
     @ResponseBody
     public Result<Boolean> redisSet() {
-    	User user  = new User();
-    	user.setId(1);
-    	user.setName("1111");
-    	redisService.set(UserKey.getById, ""+1, user);//UserKey:id1
+        User user = new User();
+        user.setId(1);
+        user.setName("1111");
+        redisService.set(UserKey.getById, "" + 1, user);//UserKey:id1
         return Result.success(true);
     }
-    
-    
+
+
 }
