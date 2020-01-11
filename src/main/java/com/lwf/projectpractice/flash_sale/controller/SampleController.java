@@ -1,6 +1,7 @@
 package com.lwf.projectpractice.flash_sale.controller;
 
 import com.lwf.projectpractice.flash_sale.domain.User;
+import com.lwf.projectpractice.flash_sale.rabbitmq.MQSender;
 import com.lwf.projectpractice.flash_sale.redis.RedisService;
 import com.lwf.projectpractice.flash_sale.redis.UserKey;
 import com.lwf.projectpractice.flash_sale.result.CodeMsg;
@@ -17,15 +18,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SampleController {
 
 
-    private final UserService userService;
+    private  UserService userService;
 
-    private final RedisService redisService;
+    private  RedisService redisService;
 
     @Autowired
     public SampleController(UserService userService, RedisService redisService) {
         this.userService = userService;
         this.redisService = redisService;
     }
+//
+//    @Autowired
+//    MQSender sender;
+//
+//    @RequestMapping("/mq")
+//    @ResponseBody
+//    public Result<String> mq(){
+//        sender.send("hello,lwf");
+//        return Result.success("hello world");
+//    }
+//
+//
+//    @RequestMapping("/mq/topic")
+//    @ResponseBody
+//    public Result<String> topic() {
+//		sender.sendTopic("hello,vimday");
+//        return Result.success("Hello，world");
+//    }
+//
+//    @RequestMapping("/mq/fanout")
+//    @ResponseBody
+//    public Result<String> fanout() {
+//		sender.sendFanout("hello,perhaps");
+//        return Result.success("Hello，world");
+//    }
+//
+//    @RequestMapping("/mq/header")
+//    @ResponseBody
+//    public Result<String> header() {
+//		sender.sendHeader("hello,cqh");
+//        return Result.success("Hello，world");
+//    }
 
 
     @RequestMapping("/hello")

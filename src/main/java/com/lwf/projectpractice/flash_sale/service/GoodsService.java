@@ -13,7 +13,7 @@ import java.util.List;
 public class GoodsService {
 
 
-    private final GoodsDao goodsDao;
+    private  GoodsDao goodsDao;
 
     @Autowired
     public GoodsService(GoodsDao goodsDao) {
@@ -28,9 +28,26 @@ public class GoodsService {
         return goodsDao.getGoodsVoByGoodsId(goodsId);
     }
 
-    public void reduceStock(GoodsVo goods) {
+    // 未优化秒杀前的减库存代码
+//    public void reduceStock(GoodsVo goods) {
+//        MiaoshaGoods g = new MiaoshaGoods();
+//        g.setGoodsId(goods.getId());
+//        goodsDao.reduceStock(g);
+//    }
+
+    public boolean reduceStock(GoodsVo goods) {
         MiaoshaGoods g = new MiaoshaGoods();
         g.setGoodsId(goods.getId());
-        goodsDao.reduceStock(g);
+        int ret = goodsDao.reduceStock(g);
+        return ret > 0;
+    }
+
+    public void resetStock(List<GoodsVo> goodsList) {
+        for(GoodsVo goods : goodsList ) {
+            MiaoshaGoods g = new MiaoshaGoods();
+            g.setGoodsId(goods.getId());
+            g.setStockCount(goods.getStockCount());
+            goodsDao.resetStock(g);
+        }
     }
 }
