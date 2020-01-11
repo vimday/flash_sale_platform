@@ -1,5 +1,19 @@
 # flash_sale_platform
 电商秒杀平台
+nginx做负载均衡，rabbitmq作消息队列，redis缓存，前后端分离，对象级与页面级粒度的缓存
+满足高并发线程安全要求
+用SpringBoot开发（也有传统的SSM版）
+前端采用thymeleaf+静态缓存
+
+同时在阿里云（centos）与局域网ubuntu主机 与本机（win10）上部署测试
+采用jmeter做压测 
+
+## TODO
+完善前端页面
+
+整合电商其他功能
+
+把部分老架构更新成目前最新的稳定的替代品
 
 ## 阿里云相关配置
 一般采用最新的稳定版本
