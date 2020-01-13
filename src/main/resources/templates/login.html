@@ -19,17 +19,30 @@
     <!-- common.js -->
     <script th:src="@{/js/common.js}" type="text/javascript"></script>
 
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            background: url('/img/bg.jpg') no-repeat;
+            background-size: 100% 100%;
+            padding-top: 100px;
+        }
+    </style>
+
 </head>
 <body>
 
-<form id="loginForm" method="post" name="loginForm" style="width:50%; margin:0 auto">
+<form id="loginForm" method="post" name="loginForm" style="width:30%; margin:0 auto;">
 
     <h2 style="text-align:center; margin-bottom: 20px">用户登录</h2>
 
     <div class="form-group">
         <div class="row">
             <label class="form-label col-md-4">请输入手机号码</label>
-            <div class="col-md-5">
+            <div class="col-md-8">
                 <input class="form-control" id="mobile" maxlength="11" minlength="11" name="mobile" placeholder="手机号码"
                        required="true" type="text"/>
             </div>
@@ -41,18 +54,18 @@
     <div class="form-group">
         <div class="row">
             <label class="form-label col-md-4">请输入密码</label>
-            <div class="col-md-5">
+            <div class="col-md-8">
                 <input class="form-control" id="password" maxlength="16" minlength="6" name="password"
                        placeholder="密码" required="true" type="password"/>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-5">
+    <div class="row" style="margin-top:40px;">
+        <div class="col-md-6">
             <button class="btn btn-primary btn-block" onclick="reset()" type="reset">重置</button>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
             <button class="btn btn-primary btn-block" onclick="login()" type="submit">登录</button>
         </div>
     </div>
@@ -87,9 +100,6 @@
                 layer.closeAll();
                 if (data.code == 0) {
                     layer.msg("成功");
-                    //window.location.href="/goods/test_webconfigure"
-                    //window.location.href="/goods/test";
-                    //window.location.href="/goods/testtoken";
                     window.location.href = "/goods/to_list";
                 } else {
                     layer.msg(data.msg);

@@ -4,8 +4,6 @@ import com.lwf.projectpractice.flash_sale.redis.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +11,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class MQSender {
 
-	private static Logger log = LoggerFactory.getLogger(MQSender.class);
-	
-	@Autowired
-	AmqpTemplate amqpTemplate ;
+    private static Logger log = LoggerFactory.getLogger(MQSender.class);
+
+    @Autowired
+    AmqpTemplate amqpTemplate;
 
 
-	//使用最简单的direct交换机
-	public void sendMiaoshaMessage(MiaoshaMessage mm) {
-		String msg = RedisService.beanToString(mm);
-		log.info("send message:"+msg);
-		amqpTemplate.convertAndSend(MQConfig.MIAOSHA_QUEUE, msg);
-	}
-	
+    //使用最简单的direct交换机
+    public void sendMiaoshaMessage(MiaoshaMessage mm) {
+        String msg = RedisService.beanToString(mm);
+        log.info("send message:" + msg);
+        amqpTemplate.convertAndSend(MQConfig.MIAOSHA_QUEUE, msg);
+    }
+
 //	public void send(Object message) {
 //		String msg = RedisService.beanToString(message);
 //		log.info("send message:"+msg);
@@ -55,6 +53,5 @@ public class MQSender {
 //		amqpTemplate.convertAndSend(MQConfig.HEADERS_EXCHANGE, "", obj);
 //	}
 
-	
-	
+
 }

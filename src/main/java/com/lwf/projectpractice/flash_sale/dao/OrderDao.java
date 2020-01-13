@@ -22,7 +22,7 @@ public interface OrderDao {
     public int insertMiaoshaOrder(MiaoshaOrder miaoshaOrder);
 
     @Select("select * from order_info where id = #{orderId}")
-    public OrderInfo getOrderById(@Param("orderId")long orderId);
+    public OrderInfo getOrderById(@Param("orderId") long orderId);
 
     @Delete("delete from order_info")
     public void deleteOrders();

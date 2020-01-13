@@ -22,6 +22,38 @@ public class RedisService {
         this.jedisPool = jedisPool;
     }
 
+    public static <T> String beanToString(T value) {
+        if (value == null) {
+            return null;
+        }
+        Class<?> clazz = value.getClass();
+        if (clazz == int.class || clazz == Integer.class) {
+            return "" + value;
+        } else if (clazz == String.class) {
+            return (String) value;
+        } else if (clazz == long.class || clazz == Long.class) {
+            return "" + value;
+        } else {
+            return JSON.toJSONString(value);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T stringToBean(String str, Class<T> clazz) {
+        if (str == null || str.length() <= 0 || clazz == null) {
+            return null;
+        }
+        if (clazz == int.class || clazz == Integer.class) {
+            return (T) Integer.valueOf(str);
+        } else if (clazz == String.class) {
+            return (T) str;
+        } else if (clazz == long.class || clazz == Long.class) {
+            return (T) Long.valueOf(str);
+        } else {
+            return JSON.toJavaObject(JSON.parseObject(str), clazz);
+        }
+    }
+
     /**
      * 获取当个对象
      */
@@ -64,7 +96,6 @@ public class RedisService {
         }
     }
 
-
     /**
      * 判断key是否存在
      */
@@ -96,13 +127,12 @@ public class RedisService {
         }
     }
 
-
     public boolean delete(KeyPrefix prefix) {
-        if(prefix == null) {
+        if (prefix == null) {
             return false;
         }
         List<String> keys = scanKeys(prefix.getPrefix());
-        if(keys==null || keys.size() <= 0) {
+        if (keys == null || keys.size() <= 0) {
             return true;
         }
         Jedis jedis = null;
@@ -114,7 +144,7 @@ public class RedisService {
             e.printStackTrace();
             return false;
         } finally {
-            if(jedis != null) {
+            if (jedis != null) {
                 jedis.close();
             }
         }
@@ -150,22 +180,6 @@ public class RedisService {
         }
     }
 
-    public static <T> String beanToString(T value) {
-        if (value == null) {
-            return null;
-        }
-        Class<?> clazz = value.getClass();
-        if (clazz == int.class || clazz == Integer.class) {
-            return "" + value;
-        } else if (clazz == String.class) {
-            return (String) value;
-        } else if (clazz == long.class || clazz == Long.class) {
-            return "" + value;
-        } else {
-            return JSON.toJSONString(value);
-        }
-    }
-
     public List<String> scanKeys(String key) {
         Jedis jedis = null;
         try {
@@ -173,38 +187,22 @@ public class RedisService {
             List<String> keys = new ArrayList<String>();
             String cursor = "0";
             ScanParams sp = new ScanParams();
-            sp.match("*"+key+"*");
+            sp.match("*" + key + "*");
             sp.count(100);
-            do{
+            do {
                 ScanResult<String> ret = jedis.scan(cursor, sp);
                 List<String> result = ret.getResult();
-                if(result!=null && result.size() > 0){
+                if (result != null && result.size() > 0) {
                     keys.addAll(result);
                 }
                 //再处理cursor
                 cursor = ret.getCursor();
-            }while(!cursor.equals("0"));
+            } while (!cursor.equals("0"));
             return keys;
         } finally {
             if (jedis != null) {
                 jedis.close();
             }
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T stringToBean(String str, Class<T> clazz) {
-        if (str == null || str.length() <= 0 || clazz == null) {
-            return null;
-        }
-        if (clazz == int.class || clazz == Integer.class) {
-            return (T) Integer.valueOf(str);
-        } else if (clazz == String.class) {
-            return (T) str;
-        } else if (clazz == long.class || clazz == Long.class) {
-            return (T) Long.valueOf(str);
-        } else {
-            return JSON.toJavaObject(JSON.parseObject(str), clazz);
         }
     }
 

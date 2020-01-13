@@ -13,7 +13,7 @@ import java.util.List;
 public class GoodsService {
 
 
-    private  GoodsDao goodsDao;
+    private GoodsDao goodsDao;
 
     @Autowired
     public GoodsService(GoodsDao goodsDao) {
@@ -43,7 +43,7 @@ public class GoodsService {
     }
 
     public void resetStock(List<GoodsVo> goodsList) {
-        for(GoodsVo goods : goodsList ) {
+        for (GoodsVo goods : goodsList) {
             MiaoshaGoods g = new MiaoshaGoods();
             g.setGoodsId(goods.getId());
             g.setStockCount(goods.getStockCount());

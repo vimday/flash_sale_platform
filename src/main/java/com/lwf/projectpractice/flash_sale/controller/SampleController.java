@@ -1,7 +1,6 @@
 package com.lwf.projectpractice.flash_sale.controller;
 
 import com.lwf.projectpractice.flash_sale.domain.User;
-import com.lwf.projectpractice.flash_sale.rabbitmq.MQSender;
 import com.lwf.projectpractice.flash_sale.redis.RedisService;
 import com.lwf.projectpractice.flash_sale.redis.UserKey;
 import com.lwf.projectpractice.flash_sale.result.CodeMsg;
@@ -18,9 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SampleController {
 
 
-    private  UserService userService;
+    private UserService userService;
 
-    private  RedisService redisService;
+    private RedisService redisService;
 
     @Autowired
     public SampleController(UserService userService, RedisService redisService) {
