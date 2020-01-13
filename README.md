@@ -1,3 +1,5 @@
+<font face="微软雅黑">
+
 # flash_sale_platform
 电商秒杀平台
 nginx做负载均衡，rabbitmq作消息队列，redis缓存，前后端分离，对象级与页面级粒度的缓存
@@ -5,8 +7,82 @@ nginx做负载均衡，rabbitmq作消息队列，redis缓存，前后端分离�
 用SpringBoot开发（也有传统的SSM版）
 前端采用thymeleaf+静态缓存
 
+安全方面采用秒杀接口隐藏,随机验证码验证，限流等方法
+
 同时在阿里云（centos）与局域网ubuntu主机 与本机（win10）上部署测试
 采用jmeter做压测 
+
+
+## 总结
+### Day 1 环境配置
+配置一个 <font face="微软雅黑" size=10 color=#950727 >舒服的漂亮的</font>开发环境(阿里云centos，ubuntu，win10).
+
+Linux 采用远程公钥链接，终端采用ohmyzsh+fish，win10下用IDEA开发，终端采用Fluent Terminal。
+
+ubuntu 使用MySQL 5.7 centos 使用MySQL 8.0.18  redis跟rabbitmq两个平台均使用最新的稳定版
+
+Spring Boot环境搭建 
+
+集成Thymeleaf 封装通用接口
+
+集成Mybatis+Druid
+
+封装Jedis, 安装配置Redis
+
+### Day2 项目框架
+数据库设计
+
+明文密码两次MD5
+
+JSR303参数校验,全局异常处理
+
+分布式Session
+
+
+### Day3 实现秒杀功能
+数据库设计
+
+商品列表页
+
+商品详情页
+
+订单详情页
+
+### Day4 测试
+JMeter 压测
+
+在服务器中命令行压测
+
+Spring Boot 打war包
+
+### Day5 页面优化
+页面缓存+URL缓存+对象缓存
+
+页面静态化+前后端分离
+
+静态资源优化
+
+CDN优化
+
+### Day6 接口优化
+Redis预减库存减少数据库访问
+
+内存标记减少Redis访问
+
+RabbitMQ各平台安装配置与Spring Boot集成配置
+
+RabbitMQ队列缓冲，异步下单，增强用户体验
+
+Nginx水平扩展
+
+### Day7 安全优化
+秒杀接口隐藏
+
+数学公式验证码
+
+接口防刷
+
+
 
 ## TODO
 完善前端页面
@@ -35,7 +111,9 @@ MySql8.0修改root密码：https://blog.csdn.net/wolf131721/article/details/9300
 
 ## 数据库表
 ### 创建秒杀用户
+
 ```mysql
+
 CREATE TABLE miaosha_user(
 id BIGINT(20) NOT NULL,
 nickname VARCHAR(255) NOT NULL,
@@ -119,3 +197,4 @@ CREATE TABLE miaosha_order
   AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8mb4 COMMENT ='秒杀订单表';
 ```
+</font>
