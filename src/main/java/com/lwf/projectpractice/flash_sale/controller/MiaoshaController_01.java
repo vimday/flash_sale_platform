@@ -115,7 +115,7 @@ public class MiaoshaController_01 implements InitializingBean {
 //    }
 
     /**
-     * rabbitma队列+redis缓存+（异步下单）+前后端分离+内存标记
+     * rabbitmq队列+redis缓存+（异步下单）+前后端分离+内存标记
      * 在zero下qps为7000第二次为10000
      * 阿里云为1300第二次为2000
      */

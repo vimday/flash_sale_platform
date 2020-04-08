@@ -12,8 +12,179 @@ nginx做负载均衡，rabbitmq作消息队列，redis缓存，前后端分离�
 同时在阿里云（centos）与局域网ubuntu主机 与本机（win10）上部署测试
 采用jmeter做压测 
 
+# 总结
 
-## 总结
+## 技术要点
+
+###  1' 分布式session
+
+用户登陆成功后利用UUID生成一个token 
+
+之后把token插入到redis中  key为token，value为user
+
+之后设置一个Cookie key为“token"  value为token 有效期设置为redis 中 token前缀的有效期 
+
+之后在httpservletresponse respons里add Cookie
+
+之后在需要user时就可以利用token从redis中获取
+
+注意 登录时 要刷新token有效期  可以通过重新add token实现
+
+
+
+### 2' 秒杀
+
+
+
+未优化版的在单机阿里云 低配置上上 秒杀功能的QPS为1300 （用jmeter压测 5000个线程，运行10次）（压测也在阿里云上进行)
+
+出现超卖！！！
+
+原因：
+
+@Update（"update miaosha_goods set stock_count=stock_count-1 where goods_id=#{goodsId}")
+
+改为
+
+@Update（"update miaosha_goods set stock_count=stock_count-1 where goods_id=#{goodsId} and stock_count>0")
+
+即可  数据库保证线程安全 不会发生超卖
+
+
+
+```java
+@RequestMapping("/do_miaosha")
+public String list(Model model, MiaoshaUser user,
+                   @RequestParam("goodsId") long goodsId) {
+    model.addAttribute("user", user);
+    if (user == null) {
+        return "login";
+    }
+    //判断库存
+    GoodsVo goods = goodsService.getGoodsVoByGoodsId(goodsId);
+    int stock = goods.getStockCount();
+    if (stock <= 0) {
+        model.addAttribute("errmsg", CodeMsg.MIAO_SHA_OVER.getMsg());
+        return "miaosha_fail";
+    }
+    //判断是否已经秒杀到了
+    MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdGoodsId(user.getId(), goodsId);
+    if (order != null) {
+        model.addAttribute("errmsg", CodeMsg.REPEATE_MIAOSHA.getMsg());
+        return "miaosha_fail";
+    }
+    //此时 若两个线程过来，库存为一 且两个用户均未秒杀过，则会执行下面的代码 库存变为-1
+    
+    //减库存 下订单 写入秒杀订单
+    OrderInfo orderInfo = miaoshaService.miaosha(user, goods);
+    //此时 减库存的数据库操作为
+    //@Update（"update miaosha_goods set stock_count=stock_count-1 where goods_id=#{goodsId}"
+    //public int reduceStock(MiaoshaGoods g);
+    
+    model.addAttribute("orderInfo", orderInfo);
+    model.addAttribute("goods", goods);
+    return "order_detail";
+}
+```
+
+
+
+但以上代码不能保证同一个用户盗刷接口多次秒杀 
+
+解决方法为 在秒杀订单表中建一个唯一索引为user_id,与goods_id,就能利用数据库来保证线程安全
+
+总结起来就是
+
+数据库加唯一索引 防止重复秒杀
+
+SQL加上库存数量判断 解决超卖
+
+
+
+### 3' 秒杀接口优化
+
+
+
+
+
+1 Redis预减库存减少数据库访问
+
+2 内存标记减少Redis访问
+
+3 请求先进入RabbitMQ队列缓冲，异步下单，增强用户体验
+
+思路 ：减少数据库访问
+
+系统初始化，先把库存数量加载到Redis
+
+收到请求 redis预减库存，库存不足就直接返回秒杀失败，
+
+否则请求进入队列，立即返回排队中，优化用户体验
+
+请求出队，生成订单，减少库存
+
+客户端轮询，是否秒杀成功
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 4' 其他相关优化
+
+1 利用redis缓存界面 
+
+
+
+页面缓存 商品列表 （相较于未使用缓存的qps1200提高了一倍多变成了2800，mysql的系统占用变得很少 系统负载也由15变成了3)
+
+url缓存 商品详情
+
+注意页面缓存与url缓存有效期时间不要太长 
+
+
+
+对象缓存 把用户对象缓存到redis中 方便修改密码等操作 注修改对象后记得更新缓存
+
+#### （也从侧面说明了，在自己的service里面不能直接引用别的dao，要引用service，因为可能涉及到service操作)
+
+2 对前端界面进行静态化分离（利用浏览器缓存技术）
+
+大部分页面采用静态缓存 ，只动态获取少量动态信息
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+
+
+
 ### Day 1 环境配置
 配置一个 <font face="微软雅黑" size=10 color=#950727 >舒服的漂亮的</font>开发环境(阿里云centos，ubuntu，win10).
 
@@ -73,7 +244,7 @@ RabbitMQ各平台安装配置与Spring Boot集成配置
 
 RabbitMQ队列缓冲，异步下单，增强用户体验
 
-Nginx水平扩展
+todo Nginx水平扩展
 
 ### Day7 安全优化
 秒杀接口隐藏
